@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function sendData(){
+            var email = document.getElementById("email").value;
+            var name = document.getElementById("name").value;
+            var data = {name: name, email: email};
+            const url = "http://localhost:7071/api/MongoTrigger";
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then((response) => {
+                if(!response.ok){
+                    throw new Error('API Error! Did not get anything!');
+                }
+                else {
+                    console.log(response)
+                    document.getElementById("received").innerText = "Empfangen"
+                    document.getElementById("received").style.color = "green"
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <form action="">
+        <label for="name">Name</label>
+        <input type="text" id="name"> <br>
+        <label for="email">E-Mail</label>
+        <input type="text" id="email"> <br>
+        <input type="button" value="Submit" onclick="sendData()">
+    </form>
+    <h3 id="received">Nicht gesendet</h3>
+</body>
+
+</html>
